@@ -1,0 +1,30 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "files.eol": "\n",
+  "editor.tabSize": 2,
+  "sqltools.useNodeRuntime": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "C:\\Users\\MasanoriFujita\\.dalk\\sqlite.db",
+      "name": "dalk local"
+    },
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "__dalk local",
+      "database": "C:\\Users\\MasanoriFujita\\.dalk\\__sqlite.db"
+    }
+  ]
+}

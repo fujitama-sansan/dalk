@@ -1,0 +1,748 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  output   = "../node_modules/.prisma/client/data"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = ""// env("DATABASE_URL")
+}
+
+// -- lkweb.mst_ucompany definition
+
+// -- Drop table
+
+// -- DROP TABLE lkweb.mst_ucompany;
+
+// CREATE TABLE lkweb.mst_ucompany (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	ucompany_name varchar NOT NULL,
+// 	delete_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	password_expire_term interval DEFAULT '00:00:00'::interval NOT NULL,
+// 	lk_edition bit(8) DEFAULT '00000001'::"bit" NOT NULL,
+// 	mobile_search_setting bit(8) DEFAULT '00000010'::"bit" NOT NULL,
+// 	effective_date_from date NOT NULL,
+// 	effective_date_to date DEFAULT '9999-12-31'::date NOT NULL,
+// 	cookie_quicklogin_setting bit(8) DEFAULT '00000100'::"bit" NOT NULL,
+// 	cookie_quicklogin_term interval DEFAULT '00:00:00'::interval NOT NULL,
+// 	login_email_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	"domain" varchar NULL,
+// 	CONSTRAINT mst_ucompany_pkey PRIMARY KEY (ucompany_id)
+// );
+// CREATE INDEX idx_mst_ucompany_domain ON lkweb.mst_ucompany USING btree (domain);
+
+model mst_ucompany {
+  crttimestamp            DateTime?
+  crtucompany             String?
+  crtuser                 String?
+  udttimestamp            DateTime?
+  udtucompany             String?
+  udtuser                 String?
+  ucompany_id             String
+  ucompany_name           String
+  delete_flag             String @db.Bit(8)
+  lk_edition              String @db.Bit(8)
+  mobile_search_setting   String @db.Bit(8)
+  effective_date_from     DateTime
+  effective_date_to       DateTime
+  cookie_quicklogin_setting String @db.Bit(8)
+  login_email_flag        String @db.Bit(8)
+  domain                  String?
+
+  @@id(fields: [ucompany_id])
+}
+
+
+
+// 
+// -- lkweb.mst_user definition
+// CREATE TABLE lkweb.mst_user (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	user_id varchar(20) NOT NULL,
+// 	user_name varchar NOT NULL,
+// 	"password" varchar NOT NULL,
+// 	uim_code bpchar(128) NULL,
+// 	email varchar NOT NULL,
+// 	sub_email varchar NULL,
+// 	login_error_count int2 DEFAULT 0 NOT NULL,
+// 	last_login_timestamp timestamptz DEFAULT '-infinity'::timestamp with time zone NOT NULL,
+// 	last_password_change_timestamp timestamptz NULL,
+// 	delete_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	user_role bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	personnel_info_subscribe_setting bit(16) DEFAULT '0000000000010110'::"bit" NOT NULL,
+// 	search_result_display_limit int2 DEFAULT 30 NOT NULL,
+// 	news_display_setting bit(8) DEFAULT '00000001'::"bit" NOT NULL,
+// 	email_client_setting bit(8) DEFAULT '00000010'::"bit" NOT NULL,
+// 	signature_text varchar NULL,
+// 	signature_setting bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	display_setting bit(16) DEFAULT '0000000000000000'::"bit" NOT NULL,
+// 	mail_body_truncate_setting bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	search_result_all_display_setting bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	mobile_search_setting_history bit(8) DEFAULT '00000001'::"bit" NOT NULL,
+// 	mail_insertion_setting bit(8) DEFAULT '00001111'::"bit" NOT NULL,
+// 	effective_date_from date NOT NULL,
+// 	effective_date_to date DEFAULT '9999-12-31'::date NOT NULL,
+// 	auto_unreachable_setting bit(8) DEFAULT '00000001'::"bit" NOT NULL,
+// 	default_file_template_id bpchar(10) NULL,
+// 	encrypted_gmail_password varchar NULL,
+// 	long_mail_setting bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	culture varchar DEFAULT 'ja-JP'::character varying NOT NULL,
+// 	timezone varchar NULL,
+// 	business_tel_prefix varchar NULL,
+// 	login_email varchar NULL,
+// 	background_image_id bpchar(10) NULL,
+// 	icon_image_id bpchar(10) NULL,
+// 	last_image_update_timestamp timestamptz NULL,
+// 	register_timestamp timestamptz DEFAULT now() NOT NULL,
+// 	suspend_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	hashed_password varchar NULL,
+// 	auto_identify_setting bit(8) DEFAULT '00000001'::"bit" NOT NULL,
+// 	user_name_phonetic varchar(256) NULL,
+// 	timezone_id uuid NOT NULL,
+// 	external_user_id varchar(128) NOT NULL,
+// 	CONSTRAINT hashed_password_check CHECK (((hashed_password)::text ~ '^\\d\\$rounds=\\d+\\$[a-z0-9-]{36}\\$[A-Z0-9]{128}$'::text)),
+// 	CONSTRAINT mst_user_login_email_key UNIQUE (login_email),
+// 	CONSTRAINT mst_user_pkey PRIMARY KEY (ucompany_id, user_id)
+// )
+// WITH (
+// 	fillfactor=90
+// );
+// CREATE UNIQUE INDEX idx_mst_user_01 ON lkweb.mst_user USING btree (ucompany_id, external_user_id) WHERE (delete_flag = (0)::bit(8));
+
+// -- Table Triggers
+
+// create trigger insert_mst_user_external_user_id_on_insert after
+// insert
+//     on
+//     lkweb.mst_user for each row execute function lkweb.insert_mst_user_external_user_id();
+// create trigger insert_mst_user_external_user_id_on_update after
+// update
+//     on
+//     lkweb.mst_user for each row execute function lkweb.insert_mst_user_external_user_id();
+// create trigger sync_mst_user_uuid after
+// insert
+//     on
+//     lkweb.mst_user for each row execute function lkweb.insert_mst_user_uuid();
+
+model mst_user {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  ucompany_id                      String
+  user_id                          String
+  user_name                        String
+  password                         String
+  uim_code                         String?
+  email                            String
+  sub_email                        String?
+  login_error_count                Int
+  last_password_change_timestamp   DateTime?
+  delete_flag                      String @db.Bit(8)
+  user_role                        String @db.Bit(8)
+  personnel_info_subscribe_setting String @db.Bit(16)
+  search_result_display_limit      Int
+  news_display_setting             String @db.Bit(8)
+  email_client_setting             String @db.Bit(8)
+  signature_text                   String?
+  signature_setting                String @db.Bit(8)
+  display_setting                  String @db.Bit(16)
+  mail_body_truncate_setting       String @db.Bit(8)
+  search_result_all_display_setting String @db.Bit(8)
+  mobile_search_setting_history    String @db.Bit(8)
+  mail_insertion_setting           String @db.Bit(8)
+  effective_date_from              DateTime
+  effective_date_to                DateTime
+  auto_unreachable_setting         String @db.Bit(8)
+  default_file_template_id         String? @db.Char(10)
+  encrypted_gmail_password         String?
+  long_mail_setting                String @db.Bit(8)
+  culture                          String
+  timezone                         String?
+  business_tel_prefix              String?
+  login_email                      String? @unique
+  background_image_id              String? @db.Char(10)
+  icon_image_id                    String? @db.Char(10)
+  last_image_update_timestamp      DateTime?
+  register_timestamp               DateTime
+  suspend_flag                     String @db.Bit(8)
+  hashed_password                  String?
+  auto_identify_setting            String @db.Bit(8)
+  user_name_phonetic               String? @db.VarChar(256)
+  timezone_id                      String // uuid
+  external_user_id                 String @db.Uuid
+
+  user_uuids                        mst_user_uuid[]
+  billing_groups                    mst_user_billing_group[]
+
+  @@id(fields: [ucompany_id, user_id])
+  @@unique([ucompany_id, external_user_id])
+}
+
+// CREATE TABLE lkweb.mst_user_uuid (
+// 	user_uuid uuid NOT NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	user_id varchar(20) NOT NULL,
+// 	revive_timestamp timestamptz NOT NULL,
+// 	CONSTRAINT mst_user_uuid_pkey PRIMARY KEY (user_uuid),
+// 	CONSTRAINT mst_user_uuid_unique UNIQUE (ucompany_id, user_id, revive_timestamp)
+// );
+model mst_user_uuid {
+  user_uuid        String @id @db.Uuid
+  ucompany_id      String
+  user_id          String
+  revive_timestamp DateTime
+
+  user              mst_user @relation(fields: [ucompany_id, user_id], references: [ucompany_id, user_id])
+
+  @@unique([ucompany_id, user_id, revive_timestamp])
+}
+
+
+// CREATE TABLE lkweb.trn_nc (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	mid_id bpchar(10) NOT NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	user_id varchar(20) NOT NULL,
+// 	register_channel bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	register_timestamp timestamptz NOT NULL,
+// 	scan_mode bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	entry_status bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	entry_due_date date NULL,
+// 	entry_recognition_status bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	completed_timestamp timestamptz NULL,
+// 	self_nc_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	export_flag bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	identification_flag bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	update_check_timestamp timestamptz NULL,
+// 	unreachable_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	coordination_status bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	handwrite_date_flag bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	stack_id bpchar(10) NOT NULL,
+// 	stack_order int2 NOT NULL,
+// 	update_timestamp timestamptz NULL,
+// 	sansan_company_code bpchar(10) NULL,
+// 	title_code bpchar(6) NULL,
+// 	exchange_date date NULL,
+// 	importance bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	locale bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	front_image_context bpchar(4) NULL,
+// 	back_image_context bpchar(4) NULL,
+// 	company_name varchar NULL,
+// 	company_name_en varchar NULL,
+// 	company_name_reading varchar NULL,
+// 	department_name varchar NULL,
+// 	title varchar NULL,
+// 	last_name varchar NULL,
+// 	first_name varchar NULL,
+// 	last_name_reading varchar NULL,
+// 	first_name_reading varchar NULL,
+// 	full_name varchar NULL,
+// 	full_name_reading varchar NULL,
+// 	postal_code varchar NULL,
+// 	address_prefecture varchar NULL,
+// 	address_city varchar NULL,
+// 	address_street varchar NULL,
+// 	address_building varchar NULL,
+// 	address_full varchar NULL,
+// 	tel varchar NULL,
+// 	second_tel varchar NULL,
+// 	fax varchar NULL,
+// 	mobile varchar NULL,
+// 	email varchar NULL,
+// 	url varchar NULL,
+// 	postal_code_2 varchar NULL,
+// 	address_prefecture_2 varchar NULL,
+// 	address_city_2 varchar NULL,
+// 	address_street_2 varchar NULL,
+// 	address_building_2 varchar NULL,
+// 	address_full_2 varchar NULL,
+// 	tel_2 varchar NULL,
+// 	second_tel_2 varchar NULL,
+// 	fax_2 varchar NULL,
+// 	mobile_2 varchar NULL,
+// 	email_2 varchar NULL,
+// 	url_2 varchar NULL,
+// 	additional_info varchar NULL,
+// 	company_name_normalized varchar NULL,
+// 	company_name_en_normalized varchar NULL,
+// 	company_name_reading_normalized varchar NULL,
+// 	department_name_normalized varchar NULL,
+// 	title_normalized varchar NULL,
+// 	last_name_normalized varchar NULL,
+// 	first_name_normalized varchar NULL,
+// 	last_name_reading_normalized varchar NULL,
+// 	first_name_reading_normalized varchar NULL,
+// 	full_name_normalized varchar NULL,
+// 	full_name_reading_normalized varchar NULL,
+// 	postal_code_normalized varchar NULL,
+// 	address_prefecture_normalized varchar NULL,
+// 	address_city_normalized varchar NULL,
+// 	address_street_normalized varchar NULL,
+// 	address_building_normalized varchar NULL,
+// 	address_full_normalized varchar NULL,
+// 	tel_normalized varchar NULL,
+// 	second_tel_normalized varchar NULL,
+// 	fax_normalized varchar NULL,
+// 	mobile_normalized varchar NULL,
+// 	email_normalized varchar NULL,
+// 	url_normalized varchar NULL,
+// 	postal_code_2_normalized varchar NULL,
+// 	address_prefecture_2_normalized varchar NULL,
+// 	address_city_2_normalized varchar NULL,
+// 	address_street_2_normalized varchar NULL,
+// 	address_building_2_normalized varchar NULL,
+// 	address_full_2_normalized varchar NULL,
+// 	tel_2_normalized varchar NULL,
+// 	second_tel_2_normalized varchar NULL,
+// 	fax_2_normalized varchar NULL,
+// 	mobile_2_normalized varchar NULL,
+// 	email_2_normalized varchar NULL,
+// 	url_2_normalized varchar NULL,
+// 	additional_info_normalized varchar NULL,
+// 	card_kind bit(8) DEFAULT '00000000'::"bit" NOT NULL,
+// 	grouped_flag bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	keyword_crawled_flag bit(8) DEFAULT '00000000'::"bit" NULL,
+// 	issued_date date NULL,
+// 	publish_date date NULL,
+// 	news_source_type int2 NULL,
+// 	news_source_id bpchar(10) NULL,
+// 	country_code varchar(2) NULL,
+// 	digitization_language varchar(5) NULL,
+// 	CONSTRAINT stack_id_stack_order_unique UNIQUE (stack_id, stack_order) DEFERRABLE,
+// 	CONSTRAINT trn_mid_pkey PRIMARY KEY (mid_id)
+// )
+// WITH (
+// 	fillfactor=90
+// );
+// CREATE INDEX idx_trn_nc_01 ON lkweb.trn_nc USING btree (ucompany_id, email_normalized);
+// CREATE INDEX idx_trn_nc_entry_status_constraint ON lkweb.trn_nc USING btree (ucompany_id, user_id) WHERE (entry_status <> '00101000'::bit(8));
+// CREATE INDEX idx_trn_nc_identification_flag ON lkweb.trn_nc USING btree (identification_flag);
+// CREATE INDEX idx_trn_nc_register_timestamp ON lkweb.trn_nc USING btree (register_timestamp);
+// CREATE INDEX idx_trn_nc_stack_id ON lkweb.trn_nc USING btree (stack_id);
+// CREATE INDEX idx_trn_nc_ucompany_id ON lkweb.trn_nc USING btree (ucompany_id);
+// CREATE INDEX idx_trn_nc_ucompany_id_company_name_normalized_etc ON lkweb.trn_nc USING btree (ucompany_id, company_name_normalized, full_name_normalized);
+// CREATE INDEX idx_trn_nc_ucompany_id_first_name_normalized ON lkweb.trn_nc USING btree (ucompany_id, first_name_normalized);
+// CREATE INDEX idx_trn_nc_ucompany_id_full_name_normalized ON lkweb.trn_nc USING btree (ucompany_id, full_name_normalized);
+// CREATE INDEX idx_trn_nc_ucompany_id_register_channel ON lkweb.trn_nc USING btree (ucompany_id, register_channel);
+// CREATE INDEX idx_trn_nc_ucompany_id_user_id_entry_status ON lkweb.trn_nc USING btree (ucompany_id, user_id, entry_status);
+// CREATE INDEX idx_trn_nc_user_id ON lkweb.trn_nc USING btree (user_id);
+
+model trn_nc {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  mid_id                           String @id @db.Char(10)
+  ucompany_id                      String
+  user_id                          String
+  register_channel                 String @db.Bit(8)
+  register_timestamp               DateTime
+  scan_mode                        String? @db.Bit(8)
+  entry_status                     String? @db.Bit(8)
+  entry_due_date                   DateTime?
+  entry_recognition_status         String? @db.Bit(8)
+  completed_timestamp              DateTime?
+  self_nc_flag                     String @db.Bit(8)
+  export_flag                      String? @db.Bit(8)
+  identification_flag              String? @db.Bit(8)
+  update_check_timestamp           DateTime?
+  unreachable_flag                 String @db.Bit(8)
+  coordination_status              String? @db.Bit(8)
+  handwrite_date_flag              String @db.Bit(8)
+  stack_id                         String @db.Char(10)
+  stack_order                      Int
+  update_timestamp                 DateTime?
+  sansan_company_code              String? @db.Char(10)
+  title_code                       String? @db.Char(6)
+  exchange_date                    DateTime?
+  importance                       String @db.Bit(8)
+  locale                           String @db.Bit(8)
+  front_image_context              String? @db.Char(4)
+  back_image_context               String? @db.Char(4)
+  company_name                     String?
+  company_name_en                  String?
+  company_name_reading             String?
+  department_name                  String?
+  title                            String?
+  last_name                        String?
+  first_name                       String?
+  last_name_reading                String?
+  first_name_reading               String?
+  full_name                        String?
+  full_name_reading                String?
+  postal_code                      String?
+  address_prefecture               String?
+  address_city                     String?
+  address_street                   String?
+  address_building                 String?
+  address_full                     String?
+  tel                              String?
+  second_tel                       String?
+  fax                              String?
+  mobile                           String?
+  email                            String?
+  url                              String?
+  postal_code_2                    String?
+  address_prefecture_2             String?
+  address_city_2                   String?
+  address_street_2                 String?
+  address_building_2               String?
+  address_full_2                   String?
+  tel_2                            String?
+  second_tel_2                     String?
+  fax_2                            String?
+  mobile_2                         String?
+  email_2                          String?
+  url_2                            String?
+  additional_info                  String?
+  issued_date                      DateTime?
+  publish_date                     DateTime?
+  news_source_type                 Int?
+  news_source_id                   String? @db.Char(10)
+  country_code                     String?
+  @@unique([stack_id, stack_order])
+  @@index(fields: [stack_id], name: "idx_trn_nc_stack_id")
+  @@index(fields: [ucompany_id], name: "idx_trn_nc_ucompany_id")
+  @@index(fields: [user_id], name: "idx_trn_nc_user_id")
+}
+
+
+// CREATE TABLE lkweb.trn_transcription_suggested_bizcard (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	transcription_suggested_bizcard_id uuid NOT NULL,
+// 	user_uuid uuid NOT NULL,
+// 	create_timestamp timestamptz NOT NULL,
+// 	email varchar(250) NULL,
+// 	last_name varchar(250) NULL,
+// 	first_name varchar(250) NULL,
+// 	company_name varchar(250) NULL,
+// 	department_name varchar(250) NULL,
+// 	title varchar(250) NULL,
+// 	postal_code varchar(10) NULL,
+// 	address_prefecture varchar(250) NULL,
+// 	address_city varchar(250) NULL,
+// 	address_street varchar(250) NULL,
+// 	address_building varchar(250) NULL,
+// 	tel varchar(30) NULL,
+// 	fax varchar(30) NULL,
+// 	mobile varchar(30) NULL,
+// 	url varchar(250) NULL,
+// 	convert_timestamp timestamptz NULL,
+// 	dismiss_timestamp timestamptz NULL,
+// 	ignore_timestamp timestamptz NULL,
+// 	CONSTRAINT trn_transcription_suggested_bizcard_pkey PRIMARY KEY (transcription_suggested_bizcard_id)
+// );
+// CREATE INDEX idx_trn_transcription_suggested_bizcard_create_timestamp ON lkweb.trn_transcription_suggested_bizcard USING btree (create_timestamp);
+// CREATE INDEX idx_trn_transcription_suggested_bizcard_ucompany_id_user_uuid ON lkweb.trn_transcription_suggested_bizcard USING btree (ucompany_id, user_uuid);
+
+
+model trn_transcription_suggested_bizcard {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  ucompany_id                      String
+  transcription_suggested_bizcard_id String @id @db.Uuid
+  user_uuid                        String @db.Uuid
+  create_timestamp                 DateTime
+  email                            String?
+  last_name                        String?
+  first_name                       String?
+  company_name                     String?
+  department_name                  String?
+  title                            String?
+  postal_code                      String?
+  address_prefecture               String?
+  address_city                     String?
+  address_street                   String?
+  address_building                 String?
+  tel                              String?
+  fax                              String?
+  mobile                           String?
+  url                              String?
+  convert_timestamp                DateTime?
+  dismiss_timestamp                DateTime?
+  ignore_timestamp                 DateTime?
+
+  @@index([create_timestamp])
+  @@index([ucompany_id, user_uuid])
+}
+
+
+// CREATE TABLE lkweb.trn_transcription_suggested_bizcard_identification_resource (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	transcription_suggested_bizcard_id uuid NOT NULL,
+// 	user_uuid uuid NOT NULL,
+// 	identification_resource_id int8 NOT NULL,
+// 	sansan_organization_code varchar(13) NULL,
+// 	sansan_organization_code_apply_timestamp timestamptz NULL,
+// 	sansan_person_code varchar(13) NULL,
+// 	sansan_person_code_apply_timestamp timestamptz NULL,
+// 	sansan_location_code varchar(13) NULL,
+// 	sansan_location_code_apply_timestamp timestamptz NULL,
+// 	CONSTRAINT trn_transcription_suggested_bizcard_ir_pkey PRIMARY KEY (transcription_suggested_bizcard_id)
+// );
+// CREATE INDEX idx_trn_transcription_suggested_bizcard_ir_ir_id ON lkweb.trn_transcription_suggested_bizcard_identification_resource USING btree (identification_resource_id);
+// CREATE INDEX idx_trn_transcription_suggested_bizcard_ir_ucompany_user ON lkweb.trn_transcription_suggested_bizcard_identification_resource USING btree (ucompany_id, user_uuid);
+
+model trn_transcription_suggested_bizcard_identification_resource {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  ucompany_id                      String
+  transcription_suggested_bizcard_id String @id @db.Uuid
+  user_uuid                        String @db.Uuid
+  identification_resource_id       Int
+  sansan_organization_code         String?
+  sansan_organization_code_apply_timestamp DateTime?
+  sansan_person_code               String?
+  sansan_person_code_apply_timestamp DateTime?
+  sansan_location_code             String?
+  sansan_location_code_apply_timestamp DateTime?
+
+  @@index(fields: [identification_resource_id], name: "idx_trn_transcription_suggested_bizcard_ir_ir_id")
+  @@index(fields: [ucompany_id, user_uuid], name: "idx_trn_transcription_suggested_bizcard_ir_ucompany_user")
+}
+
+// CREATE TABLE lkweb.cmn_lk_feature_availability (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	feature_name varchar(100) NOT NULL,
+// 	CONSTRAINT cmn_lk_feature_availability_pkey PRIMARY KEY (feature_name)
+// );
+
+model cmn_lk_feature_availability {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  feature_name                     String @id
+}
+
+// CREATE TABLE lkweb.cmn_lk_feature_activation (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	feature_name varchar(100) NOT NULL,
+// 	CONSTRAINT cmn_lk_feature_activation_pkey PRIMARY KEY (feature_name)
+// );
+
+model cmn_lk_feature_activation {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  feature_name                     String @id
+}
+
+// CREATE TABLE lkweb.mst_feature_availability (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	billing_group_id bpchar(10) NOT NULL,
+// 	feature_name varchar(100) NOT NULL,
+// 	effective_from timestamptz NOT NULL,
+// 	effective_to timestamptz NULL,
+// 	CONSTRAINT mst_feature_availability_pkey PRIMARY KEY (ucompany_id, billing_group_id, feature_name)
+// );
+
+model mst_feature_availability {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  ucompany_id                      String
+  billing_group_id                 String @db.Char(10)
+  feature_name                     String
+  effective_from                   DateTime
+  effective_to                     DateTime?
+
+  @@id(fields: [ucompany_id, billing_group_id, feature_name])
+}
+
+// CREATE TABLE lkweb.mst_feature_activation (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	feature_activation_id uuid NOT NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	billing_group_id bpchar(10) NOT NULL,
+// 	feature_name varchar(100) NOT NULL,
+// 	activate_timestamp timestamptz NOT NULL,
+// 	deactivate_timestamp timestamptz NULL,
+// 	CONSTRAINT mst_feature_activation_pkey PRIMARY KEY (feature_activation_id)
+// );
+
+model mst_feature_activation {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  feature_activation_id            String @id @db.Uuid
+  ucompany_id                      String
+  billing_group_id                 String @db.Char(10)
+  feature_name                     String
+  activate_timestamp               DateTime
+  deactivate_timestamp             DateTime?
+}
+
+// CREATE TABLE lkweb.mst_user_billing_group (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	user_id varchar(20) NOT NULL,
+// 	billing_group_id bpchar(10) NOT NULL,
+// 	contract_start_date date NOT NULL,
+// 	CONSTRAINT mst_user_billing_group_pkey PRIMARY KEY (ucompany_id, user_id)
+// )
+
+model mst_user_billing_group {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  ucompany_id                      String
+  user_id                          String
+  billing_group_id                 String @db.Char(10)
+  contract_start_date              DateTime
+
+  user                            mst_user @relation(fields: [ucompany_id, user_id], references: [ucompany_id, user_id])
+
+  @@id(fields: [ucompany_id, user_id])
+}
+
+// CREATE TABLE lkweb.trn_transcription_msexchange_fetch_schedule (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	user_uuid uuid NOT NULL,
+// 	msexchange_credential_id uuid NOT NULL,
+// 	last_fetch_timestamp timestamptz NULL,
+// 	fetch_interval interval NULL,
+// 	fetch_status int4 NOT NULL,
+// 	CONSTRAINT trn_transcription_msexchange_fetch_schedule_pkey PRIMARY KEY (ucompany_id, user_uuid, msexchange_credential_id)
+// );
+
+model trn_transcription_msexchange_fetch_schedule {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  ucompany_id                      String
+  user_uuid                        String @db.Uuid
+  msexchange_credential_id         String @db.Uuid
+  last_fetch_timestamp             DateTime?
+  fetch_status                     Int
+
+  @@id(fields: [ucompany_id, user_uuid, msexchange_credential_id])
+}
+
+// CREATE TABLE lkweb.mst_transcription_mail_msexchange_credential (
+// 	crttimestamp timestamptz NULL,
+// 	crtucompany varchar(20) NULL,
+// 	crtuser varchar(20) NULL,
+// 	udttimestamp timestamptz NULL,
+// 	udtucompany varchar(20) NULL,
+// 	udtuser varchar(20) NULL,
+// 	msexchange_credential_id uuid NOT NULL,
+// 	ucompany_id varchar(20) NOT NULL,
+// 	billing_group_id bpchar(10) NOT NULL,
+// 	msexchange_tenant_id uuid NOT NULL,
+// 	encrypted_iv_access_token bytea NOT NULL,
+// 	token_expire_timestamp timestamptz NOT NULL,
+// 	delete_flag bool NOT NULL,
+// 	CONSTRAINT mst_transcription_mail_msexchange_credential_pkey PRIMARY KEY (msexchange_credential_id)
+// );
+// CREATE UNIQUE INDEX idx_mst_transcription_mail_msexchange_credential_unique ON lkweb.mst_transcription_mail_msexchange_credential USING btree (ucompany_id, billing_group_id) WHERE (delete_flag = false);
+
+model mst_transcription_mail_msexchange_credential {
+  crttimestamp                     DateTime?
+  crtucompany                      String?
+  crtuser                          String?
+  udttimestamp                     DateTime?
+  udtucompany                      String?
+  udtuser                          String?
+  msexchange_credential_id         String @id @db.Uuid
+  ucompany_id                      String
+  billing_group_id                 String @db.Char(10)
+  msexchange_tenant_id             String @db.Uuid
+  encrypted_iv_access_token        Bytes @db.ByteA
+  token_expire_timestamp           DateTime
+  delete_flag                      Boolean
+
+  @@unique([ucompany_id, billing_group_id])
+}

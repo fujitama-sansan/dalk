@@ -1,0 +1,11 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
+  "include": ["electron.vite.config.ts", "vitest.staging.config.mts", "src/main/**/*.ts", "src/preload/**/*.ts", "src/common/**/*.ts", "src/setup/**/*ts"],
+  "compilerOptions": {
+    "composite": true,
+    "allowJs": true,
+    "types": [
+      "electron-vite/node"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  output   = "../node_modules/.prisma/client/local"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("LOCAL_DATABASE_URL")// env("DATABASE_URL")
+}
+
+model UcompanyShard {
+  dbSettingId String 
+  ucompanyId String
+  shardNum Int
+
+  @@id([dbSettingId, ucompanyId])
+}
+
+model DbSetting {
+  id String @id
+  name String
+  host String?
+  port Int?
+  user String
+  password String
+  staging Boolean
+}
+
+model SqsMessageDefinition {
+  id String @id
+  name String
+  queueUrl String
+  queueName String
+  messageClass String
+  correlationId String
+  graph String
+}
+
+model QueryItem {
+  id String @id
+  query String
+  targetParameter String
+  querySetDefinitionId String
+  listOrder Int
+
+  querySetDefinition QuerySetDefinition @relation(fields: [querySetDefinitionId], references: [id])
+}
+
+model QuerySetDefinition {
+  id String @id
+  name String
+  description String
+  threshold Int
+  maxCount Int
+  ucompanyIds String
+  queries QueryItem[]
+}
+
+model UserSetting {
+  key String @id
+  value String?
+}
