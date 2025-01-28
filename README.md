@@ -87,6 +87,10 @@ npm run test
 - LKのDBアクセス。cmnを使わずdataだけ。
 - Dalkで使うデータを格納するSqliteアクセス
 
+### SQLite
+
+設定値やSQSメッセージ、計測用SQLなどを保存する
+
 ## rendererプロセス
 
 ### React
@@ -116,7 +120,3 @@ UIコンポーネントにMUIのMaterial UIを利用しています。
 Storybookみたいなやつ。すごく軽い。
 
 - [Introduction \| Ladle](https://ladle.dev/docs/)
-
-### SQLite
-
-設定値やSQSメッセージ、計測用SQLなどを保存する
