@@ -13,15 +13,17 @@ npm run setup
 
 # 起動するには
 
-開発用の実行を利用してください。
+lk-dev or lk-stagingのDB（data-\*）に接続できるネットワークが必要です。
 
-LKの開発用 or ステージングDBに接続できるネットワークが必要です。
+## VSCodeの起動アクション（F5キー）
+
+**Launcher（Debug All）** で起動するとmainプロセスのデバッガが使えます。起動したウィンドウ上でF12キーを押すとDev toolが開きます。
+
+## コマンドからも起動できます
 
 ```shell
 npm run dev
 ```
-
-もしくは、VSCodeのLauncher（Debug All）で起動するとデバッガが使えます。
 
 # 配布するには
 
@@ -41,7 +43,7 @@ npm run build:mac
 
 # 開発するには
 
-推奨エディタはVSCodeです。
+推奨エディタはVSCodeです。推奨の拡張機能もインストールしてください。
 
 ## Frontendのみ開発する場合
 
@@ -58,6 +60,13 @@ DB接続とかAWSとかをすべてMockで置き換えてUI以外の部分をテ
 ```shell
 npm run test
 ```
+
+## ローカルDB（SQLite）の定義を変更するには
+
+1. `prisma/local.prisma`を変更
+2. ```
+   npm run generate:local
+   ```
 
 # 技術スタック
 
@@ -107,3 +116,7 @@ UIコンポーネントにMUIのMaterial UIを利用しています。
 Storybookみたいなやつ。すごく軽い。
 
 - [Introduction \| Ladle](https://ladle.dev/docs/)
+
+### SQLite
+
+設定値やSQSメッセージ、計測用SQLなどを保存する
